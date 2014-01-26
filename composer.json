@@ -1,0 +1,24 @@
+{
+    "name": "fzerorubigd/silex-lazy-thumbnail-generator",
+    "description": "A lazy thumbnail generator for silex",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fzerorubigd",
+            "email": "fzerorubigd@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "silex/silex": "~1.0",
+        "sybio/image-workshop": "@stable",
+        "monolog/monolog": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Cybits\\Silex\\Provider\\": ""
+        }
+    },
+    "target-dir": "Cybits/Silex/Provider"
+}
