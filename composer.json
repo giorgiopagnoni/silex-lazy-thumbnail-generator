@@ -2,6 +2,7 @@
     "name": "fzerorubigd/silex-lazy-thumbnail-generator",
     "description": "A lazy thumbnail generator for silex",
     "license": "MIT",
+    "keywords": ["silex", "thumbnail", "image-workshop"],
     "authors": [
         {
             "name": "fzerorubigd",

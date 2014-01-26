@@ -22,14 +22,18 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
     public function register(Application $app)
     {
         //Set the input directory for using with route
-        $app['lazy.thumbnail.mount_paths'] = array(
+        $app['lazy.thumbnail.mount_paths'] = array();
+        /* Some thing like this:
+         array(
             '/images' => array(
                 'allowed_ext' => 'jpg,jpeg,png',
                 'allowed_size' => array('*.*'),
                 'max_size' => '512.512',
-                'on_the_fly' => true
+                'on_the_fly' => true,
+                'route_name' => 'lazy_image_thumbnail_images'
             )
         );
+        */
         //This is normally correct, but you can customize it
         $app['lazy.thumbnail.web_root'] = dirname($_SERVER['SCRIPT_FILENAME']);
     }
@@ -68,7 +72,7 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
             $logger = function () {
             };
         }
-        $controllers->match(
+        $controller = $controllers->match(
             '/{arguments}',
             '\\Cybits\\Silex\\Provider\\Controller\\GeneratorController::generateAction'
         )
@@ -87,7 +91,8 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
                     $file = $pattern[1];
                     $path = $app['lazy.thumbnail.web_root'] . $route . '/' . $file;
                     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-                    $allowedExt = array_map('trim', explode(',', strtolower($parameters['allowed_ext'])));
+                    $allowedExt = !isset($parameters['allowed_ext']) ? $parameters['allowed_ext'] : 'jpeg,jpg,gif,png';
+                    $allowedExt = array_map('trim', explode(',', strtolower($allowedExt)));
                     if (!file_exists($path) ||
                         !in_array($ext, $allowedExt)
                     ) {
@@ -95,8 +100,10 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
                         $app->abort(404);
                     }
 
-                    if (preg_match('/^([0-9]*)\.([0-9]*)$/', $parameters['max_size'], $maxSize)) {
-                        if ($maxSize[0] < $matches[0] || $maxSize[1] < $matches[1]) {
+                    if (isset($parameters['max_size']) &&
+                        preg_match('/^([0-9]*)\.([0-9]*)$/', $parameters['max_size'], $maxSize)
+                    ) {
+                        if ($maxSize[2] < $matches[2] || $maxSize[1] < $matches[1]) {
                             $logger(Logger::ERROR, "The maximum size is reached.");
                             $app->abort(404);
                         }
@@ -128,6 +135,10 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
                     return false;
                 }
             );
+
+        if (isset($parameters['route_name'])) {
+            $controller->bind($parameters['route_name']);
+        }
 
         return $controllers;
     }
