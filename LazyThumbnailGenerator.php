@@ -49,7 +49,8 @@ class LazyThumbnailGenerator implements ServiceProviderInterface
     {
         $paths = $app['lazy.thumbnail.mount_paths'];
         foreach ($paths as $route => $data) {
-            $app->mount($route, $this->connect($app, $route, $data));
+            $realRoute = isset($data['route']) ? $data['route'] : $route;
+            $app->mount($realRoute, $this->connect($app, $realRoute, $data));
         }
     }
 

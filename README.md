@@ -57,6 +57,8 @@ REMEMBER: its important to prevent access to any size. higher size, means more m
 if you want to use the caching mechanism, then use the ```on_the_fly``` and set it to true (default is false)
 for using this route with UrlGeneratorServiceProvider, you can assign a name to this route with ```route_name```
 
+-- If you want, you can pass route inside the array with ```route``` key, then the array key is ignored.
+
 lazy.thumbnail.web_root
 -----------------------
 
