@@ -16,7 +16,6 @@ class GeneratorController
         $expectedWidth = $arguments['width'];
         $expectedHeight = $arguments['height'];
 
-        $largestSide = max($expectedWidth, $expectedHeight);
         $base = ImageWorkshop::initFromPath($arguments['file']);
         $base->resizeInPixel($arguments['width'], $arguments['height'], false);
         $fileName = basename($arguments['file']);
