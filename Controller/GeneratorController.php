@@ -18,9 +18,7 @@ class GeneratorController
 
         $largestSide = max($expectedWidth, $expectedHeight);
         $base = ImageWorkshop::initFromPath($arguments['file']);
-        $base->cropMaximumInPixel(0, 0, "MM");
-        $base->resizeInPixel($largestSide, $largestSide);
-        $base->cropInPixel($expectedWidth, $expectedHeight, 0, 0, 'MM');
+        $base->resizeInPixel($arguments['width'], $arguments['height'], false);
         $fileName = basename($arguments['file']);
         if (!$arguments['on_the_fly']) {
             $folder = $arguments['web_root'] . $arguments['mount'] .
